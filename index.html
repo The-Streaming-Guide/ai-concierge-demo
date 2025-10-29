@@ -245,6 +245,133 @@
           imageUrl:
             "https://placehold.co/600x800/E5E7EB/000000?text=White+Sneakers",
         },
+        {
+          id: "prod10",
+          name: "Linen Button-Down Shirt",
+          category: "shirt",
+          style: "casual",
+          color: "white",
+          occasion: "summer",
+          price: "$75.00",
+          inStock: true,
+          imageUrl:
+            "https://placehold.co/600x800/FFFFFF/000000?text=Linen+Shirt",
+        },
+        {
+          id: "prod11",
+          name: "Black Pleated Midi Skirt",
+          category: "skirt",
+          style: "casual",
+          color: "black",
+          occasion: "office",
+          price: "$88.00",
+          inStock: true,
+          imageUrl:
+            "https://placehold.co/600x800/111827/FFFFFF?text=Midi+Skirt",
+        },
+        {
+          id: "prod12",
+          name: "Denim Cutoff Shorts",
+          category: "shorts",
+          style: "casual",
+          color: "blue",
+          occasion: "beach",
+          price: "$55.00",
+          inStock: true,
+          imageUrl:
+            "https://placehold.co/600x800/3B82F6/FFFFFF?text=Denim+Shorts",
+        },
+        {
+          id: "prod13",
+          name: "Velvet Cocktail Dress",
+          category: "dress",
+          style: "formal",
+          color: "purple",
+          occasion: "party",
+          price: "$180.00",
+          inStock: true,
+          imageUrl:
+            "https://placehold.co/600x800/7E22CE/FFFFFF?text=Velvet+Dress",
+        },
+        {
+          id: "prod14",
+          name: "Leather Moto Jacket",
+          category: "jacket",
+          style: "casual",
+          color: "black",
+          price: "$425.00",
+          inStock: true,
+          imageUrl:
+            "https://placehold.co/600x800/000000/FFFFFF?text=Moto+Jacket",
+        },
+        {
+          id: "prod15",
+          name: "Floral Print Maxi Dress",
+          category: "dress",
+          style: "casual",
+          color: "pink",
+          occasion: "summer",
+          price: "$145.00",
+          inStock: true,
+          imageUrl:
+            "https://placehold.co/600x800/EC4899/FFFFFF?text=Floral+Maxi",
+        },
+        {
+          id: "prod16",
+          name: "Brown Leather Loafers",
+          category: "shoes",
+          style: "casual",
+          color: "brown",
+          occasion: "office",
+          price: "$160.00",
+          inStock: true,
+          imageUrl:
+            "https://placehold.co/600x800/78350F/FFFFFF?text=Leather+Loafers",
+        },
+        {
+          id: "prod17",
+          name: "Cashmere Turtleneck Sweater",
+          category: "sweater",
+          style: "casual",
+          color: "beige",
+          price: "$250.00",
+          inStock: true,
+          imageUrl:
+            "https://placehold.co/600x800/F5E5D7/000000?text=Cashmere+Sweater",
+        },
+        {
+          id: "prod18",
+          name: "Tuxedo with Satin Lapel",
+          category: "suit",
+          style: "formal",
+          color: "black",
+          occasion: "gala",
+          price: "$850.00",
+          inStock: true,
+          imageUrl: "https://placehold.co/600x800/000000/FFFFFF?text=Tuxedo",
+        },
+        {
+          id: "prod19",
+          name: "Silk Scarf",
+          category: "accessory",
+          style: "formal",
+          color: "multi",
+          price: "$95.00",
+          inStock: true,
+          imageUrl:
+            "https://placehold.co/600x800/9333EA/FFFFFF?text=Silk+Scarf",
+        },
+        {
+          id: "prod20",
+          name: "Athletic Performance T-Shirt",
+          category: "shirt",
+          style: "sport",
+          color: "gray",
+          price: "$45.00",
+          inStock: true,
+          imageUrl:
+            "https://placehold.co/600x800/6B7280/FFFFFF?text=Athletic+Shirt",
+        },
       ];
       // --- END OF MOCK DATABASE ---
 
@@ -410,10 +537,10 @@
       async function getStructuredQuery(message) {
         const systemPrompt = `You are an expert e-commerce search assistant. Analyze the user's request and extract the following search criteria. All properties are optional; if a criterion is not mentioned, set its value to null. 
             
-Available categories: 'dress', 'jeans', 'blazer', 'shoes'
-Available styles: 'formal', 'casual'
-Available colors: 'blue', 'gray', 'yellow', 'red'
-Available occasions: 'wedding', 'summer'`;
+Available categories: 'dress', 'jeans', 'blazer', 'shoes', 'pants', 'shirt', 'skirt', 'shorts', 'jacket', 'sweater', 'suit', 'accessory'
+Available styles: 'formal', 'casual', 'sport'
+Available colors: 'blue', 'gray', 'yellow', 'red', 'green', 'beige', 'white', 'black', 'purple', 'pink', 'brown', 'multi'
+Available occasions: 'wedding', 'summer', 'gala', 'business', 'office', 'beach', 'party'`;
 
         const payload = {
           contents: [{ parts: [{ text: message }] }],
