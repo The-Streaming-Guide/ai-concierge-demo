@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Shopping Concierge - Mockup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .chat-bubble-bot {
+        background-color: #f3f4f6; /* gray-100 */
+      }
+      .chat-bubble-user {
+        background-color: #111827; /* gray-900 */
+        color: white;
+      }
+      .product-card {
+        scroll-snap-align: start;
+      }
+    </style>
+  </head>
+  <body class="bg-white antialiased">
+    <div class="flex h-screen w-full flex-col">
+      <!-- Header -->
+      <div class="bg-gray-50 border-b border-gray-200 p-4 shadow-sm">
+        <h1 class="text-xl font-semibold text-gray-900 text-center">
+          AI Shopping Concierge
+        </h1>
+        <p class="text-sm text-gray-600 text-center">
+          Demo: Grounded RAG Model
+        </p>
+      </div>
+
+      <!-- Chat Area -->
+      <div id="chat-window" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
+        <!-- Initial Bot Message -->
+        <div class="flex items-start space-x-3">
+          <div
+            class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center"
+          >
+            <svg
+              class="w-5 h-5 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9.75 17.25l.038-.038A5.25 5.25 0 0115 15.11V15.11a5.25 5.25 0 015.212 5.288l.038.038M9.75 17.25L9 17.25a5.25 5.25 0 01-5.212-5.288l-.038-.038A5.25 5.25 0 019 6.89V6.89a5.25 5.25 0 015.212 5.288l.038.038M9.75 17.25l-.038.038A5.25 5.25 0 0015 19.11V19.11a5.25 5.25 0 005.212-5.288l.038-.038M9.75 17.25L9 17.25a5.25 5.25 0 00-5.212 5.288l-.038.038A5.25 5.25 0 009 25.11V25.11a5.25 5.25 0 005.212-5.288l.038-.038"
+              ></path>
+            </svg>
+          </div>
+          <div class="max-w-xs md:max-w-md">
+            <div class="chat-bubble-bot p-3 rounded-lg shadow-sm">
+              <p class="text-sm text-gray-800">
+                Hi! I'm your AI shopping assistant. How can I help you find the
+                perfect outfit today? <br /><br />
+                You can try saying:
+                <br /><em>"I need a dress for a summer wedding."</em> <br /><em
+                  >"Do you have any casual blue jeans?"</em
+                >
+                <br /><em>"Show me some formal blazers."</em>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- More messages will be appended here -->
+      </div>
+
+      <!-- Typing Indicator -->
+      <div id="typing-indicator" class="p-4 md:p-6" style="display: none">
+        <div class="flex items-start space-x-3">
+          <div
+            class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center"
+          >
+            <svg
+              class="w-5 h-5 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9.75 17.25l.038-.038A5.25 5.25 0 0115 15.11V15.11a5.25 5.25 0 015.212 5.288l.038.038M9.75 17.25L9 17.25a5.25 5.25 0 01-5.212-5.288l-.038-.038A5.25 5.25 0 019 6.89V6.89a5.25 5.25 0 015.212 5.288l.038.038M9.75 17.25l-.038.038A5.25 5.25 0 0015 19.11V19.11a5.25 5.25 0 005.212-5.288l.038-.038M9.75 17.25L9 17.25a5.25 5.25 0 00-5.212 5.288l-.038.038A5.25 5.25 0 009 25.11V25.11a5.25 5.25 0 005.212-5.288l.038-.038"
+              ></path>
+            </svg>
+          </div>
+          <div class="max-w-xs md:max-w-md">
+            <div class="chat-bubble-bot p-3 rounded-lg shadow-sm">
+              <div class="flex space-x-1">
+                <div
+                  class="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                  style="animation-delay: 0.1s"
+                ></div>
+                <div
+                  class="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                  style="animation-delay: 0.2s"
+                ></div>
+                <div
+                  class="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                  style="animation-delay: 0.3s"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="bg-gray-50 border-t border-gray-200 p-4 shadow-inner">
+        <form id="chat-form" class="flex items-center space-x-3">
+          <input
+            type="text"
+            id="user-input"
+            placeholder="Ask me to find an item..."
+            class="flex-1 w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent"
+            autocomplete="off"
+          />
+          <button
+            type="submit"
+            class="flex-shrink-0 bg-gray-900 text-white px-5 py-2 rounded-full font-medium hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2"
+          >
+            Send
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // --- THIS IS OUR MOCK PRODUCT DATABASE ---
+      // In a real RAG model, the AI would query your *actual* database
+      // or product API to get this information in real-time.
+      const mockCatalog = [
+        {
+          id: "prod1",
+          name: "Azure Blue Silk Dress",
+          category: "dress",
+          style: "formal",
+          color: "blue",
+          occasion: "wedding",
+          price: "$220.00",
+          inStock: true,
+          imageUrl:
+            "https://placehold.co/600x800/60A5FA/FFFFFF?text=Azure+Dress",
+        },
+        {
+          id: "prod2",
+          name: "Classic Faded Jeans",
+          category: "jeans",
+          style: "casual",
+          color: "blue",
+          price: "$85.00",
+          inStock: true,
+          imageUrl:
+            "https://placehold.co/600x800/3B82F6/FFFFFF?text=Classic+Jeans",
+        },
+        {
+          id: "prod3",
+          name: "Charcoal Wool Blazer",
+          category: "blazer",
+          style: "formal",
+          color: "gray",
+          price: "$350.00",
+          inStock: true,
+          imageUrl:
+            "https://placehold.co/600x800/4B5563/FFFFFF?text=Wool+Blazer",
+        },
+        {
+          id: "prod4",
+          name: "Sunny Yellow Sundress",
+          category: "dress",
+          style: "casual",
+          color: "yellow",
+          occasion: "summer",
+          price: "$130.00",
+          inStock: true,
+          imageUrl: "https://placehold.co/600x800/F59E0B/FFFFFF?text=Sundress",
+        },
+        {
+          id: "prod5",
+          name: "Crimson Red Heels",
+          category: "shoes",
+          style: "formal",
+          color: "red",
+          occasion: "wedding",
+          price: "$190.00",
+          inStock: true,
+          imageUrl: "https://placehold.co/600x800/EF4444/FFFFFF?text=Red+Heels",
+        },
+      ];
+      // --- END OF MOCK DATABASE ---
+
+      const chatForm = document.getElementById("chat-form");
+      const userInput = document.getElementById("user-input");
+      const chatWindow = document.getElementById("chat-window");
+      const typingIndicator = document.getElementById("typing-indicator");
+
+      // --- Gemini API Configuration ---
+      const apiKey = ""; // Per instructions, leave empty string.
+      const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+      // --- New: Reusable Gemini API call function with exponential backoff ---
+      /**
+       * Calls the Gemini API with exponential backoff.
+       * @param {object} payload - The payload to send to the API.
+       * @param {number} maxRetries - Maximum number of retries.
+       * @returns {Promise<object>} - The API response.
+       */
+      async function callGeminiAPI(payload, maxRetries = 3) {
+        let attempt = 0;
+        let delay = 1000; // Start with 1 second
+
+        while (attempt < maxRetries) {
+          try {
+            const response = await fetch(geminiApiUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+              // Don't retry on bad requests (4xx), only server errors (5xx) or rate limits (429)
+              if (
+                response.status >= 400 &&
+                response.status < 500 &&
+                response.status !== 429
+              ) {
+                console.error(
+                  `Gemini API request failed with status ${response.status}:`,
+                  await response.text()
+                );
+                throw new Error(`APIError: ${response.status}`);
+              }
+              // Otherwise, it's a server error or rate limit, so retry
+              throw new Error(`RetryableError: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (
+              result.candidates &&
+              result.candidates.length > 0 &&
+              result.candidates[0].content &&
+              result.candidates[0].content.parts &&
+              result.candidates[0].content.parts.length > 0
+            ) {
+              return result; // Success
+            } else {
+              // Valid response but no content, treat as an error to be safe
+              console.error("Gemini API returned no content:", result);
+              throw new Error("No content from API");
+            }
+          } catch (error) {
+            if (error.message.startsWith("APIError")) {
+              // Non-retryable client error
+              throw error;
+            }
+            attempt++;
+            if (attempt >= maxRetries) {
+              console.error("Gemini API call failed after max retries:", error);
+              throw error; // Throw error after max retries
+            }
+            console.warn(
+              `Gemini API call failed, retrying in ${
+                delay / 1000
+              }s... (Attempt ${attempt})`
+            );
+            await new Promise((resolve) => setTimeout(resolve, delay));
+            delay *= 2; // Exponential backoff
+          }
+        }
+      }
+
+      // --- End of new API function ---
+
+      chatForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const message = userInput.value.trim();
+        if (message) {
+          displayUserMessage(message);
+          processBotResponse(message); // This is now async
+          userInput.value = "";
+        }
+      });
+
+      function displayUserMessage(message) {
+        const messageElement = document.createElement("div");
+        messageElement.className = "flex justify-end";
+        messageElement.innerHTML = `
+                <div class="max-w-xs md:max-w-md">
+                    <div class="chat-bubble-user p-3 rounded-lg shadow-sm">
+                        <p class="text-sm">${message}</p>
+                    </div>
+                </div>
+            `;
+        chatWindow.appendChild(messageElement);
+        scrollToBottom();
+      }
+
+      /**
+       * --- MODIFIED: This function is now async and uses Gemini ---
+       * Processes the user's message, tries to get a structured query from Gemini,
+       * and then displays the results. Falls back to simple search on error.
+       */
+      async function processBotResponse(message) {
+        typingIndicator.style.display = "block";
+        scrollToBottom();
+
+        let products = [];
+        let botText = "";
+        const originalMessage = message; // Keep original message for display
+
+        try {
+          // 1. ✨ New Step: Call Gemini to get a structured query
+          const queryObject = await getStructuredQuery(message.toLowerCase());
+
+          // 2. New Step: Filter products based on the structured query
+          products = findProductsFromQuery(queryObject);
+        } catch (error) {
+          // 3. Fallback: If Gemini fails, use the old simple search
+          console.error(
+            "Gemini 'Structured Query' call failed, falling back to simple search:",
+            error
+          );
+          products = findProductsSimple(message.toLowerCase());
+        }
+
+        // 4. "Generation": Create a natural language response (same as before)
+        typingIndicator.style.display = "none";
+
+        if (products.length > 0) {
+          botText = `Great! I found ${products.length} item(s) that match your request for "${originalMessage}". Here they are:`;
+        } else if (message.includes("wedding")) {
+          botText =
+            "I couldn't find an exact match for that, but here are some other items perfect for a wedding.";
+          // Fallback search
+          products.push(...findProductsSimple("wedding"));
+        } else if (message.includes("thank")) {
+          botText =
+            "You're very welcome! Is there anything else I can help you find today?";
+        } else {
+          botText = `I wasn't able to find an exact match for "${originalMessage}". However, here are some of our best-sellers you might like:`;
+          // Fallback to show a few random items
+          products.push(mockCatalog[1], mockCatalog[3]);
+        }
+
+        displayBotMessage(botText, products);
+      }
+
+      /** * --- NEW: Calls Gemini to get a structured query object ---
+       */
+      async function getStructuredQuery(message) {
+        const systemPrompt = `You are an expert e-commerce search assistant. Analyze the user's request and extract the following search criteria. All properties are optional; if a criterion is not mentioned, set its value to null. 
+            
+Available categories: 'dress', 'jeans', 'blazer', 'shoes'
+Available styles: 'formal', 'casual'
+Available colors: 'blue', 'gray', 'yellow', 'red'
+Available occasions: 'wedding', 'summer'`;
+
+        const payload = {
+          contents: [{ parts: [{ text: message }] }],
+          systemInstruction: {
+            parts: [{ text: systemPrompt }],
+          },
+          generationConfig: {
+            responseMimeType: "application/json",
+            responseSchema: {
+              type: "OBJECT",
+              properties: {
+                category: { type: "STRING", nullable: true },
+                style: { type: "STRING", nullable: true },
+                color: { type: "STRING", nullable: true },
+                occasion: { type: "STRING", nullable: true },
+              },
+              propertyOrdering: ["category", "style", "color", "occasion"],
+            },
+          },
+        };
+
+        console.log("Asking Gemini for structured query...");
+        const result = await callGeminiAPI(payload);
+        const jsonText = result.candidates[0].content.parts[0].text;
+        console.log("Gemini returned query:", jsonText);
+        return JSON.parse(jsonText);
+      }
+
+      /**
+       * --- "RETRIEVAL" FUNCTION (Old) ---
+       * Renamed to findProductsSimple for fallback.
+       */
+      function findProductsSimple(query) {
+        return mockCatalog.filter((item) => {
+          return (
+            item.inStock &&
+            (query.includes(item.category) ||
+              query.includes(item.style) ||
+              query.includes(item.color) ||
+              (item.occasion && query.includes(item.occasion)) ||
+              item.name.toLowerCase().includes(query))
+          );
+        });
+      }
+
+      /**
+       * --- NEW: "RETRIEVAL" FUNCTION (Smart) ---
+       * This filters the catalog based on the structured query from Gemini.
+       */
+      function findProductsFromQuery(queryObject) {
+        return mockCatalog.filter((item) => {
+          if (!item.inStock) return false;
+
+          // Check each field from the query object.
+          // If the query has a value for a field, it MUST match.
+          // If the query value is null, it's ignored (matches anything).
+          if (queryObject.category && item.category !== queryObject.category) {
+            return false;
+          }
+          if (queryObject.style && item.style !== queryObject.style) {
+            return false;
+          }
+          if (queryObject.color && item.color !== queryObject.color) {
+            return false;
+          }
+          if (queryObject.occasion && item.occasion !== queryObject.occasion) {
+            return false;
+          }
+
+          // If it passed all checks, include it.
+          return true;
+        });
+      }
+
+      /**
+       * --- NEW: Calls Gemini to get styling advice ---
+       */
+      async function getStylingAdvice(productId, productName) {
+        // 1. Show the user's "click" as a message
+        displayUserMessage(`How should I style the "${productName}"?`);
+        typingIndicator.style.display = "block";
+        scrollToBottom();
+
+        const userPrompt = `I'm interested in the "${productName}". Give me 2-3 short, fashionable styling tips for a complete outfit. Mention other types of items or accessories that would pair well. Keep the tone helpful and chic.`;
+
+        const payload = {
+          contents: [{ parts: [{ text: userPrompt }] }],
+        };
+
+        let botResponse = "";
+        try {
+          console.log("Asking Gemini for styling advice...");
+          const result = await callGeminiAPI(payload);
+          botResponse = result.candidates[0].content.parts[0].text;
+        } catch (error) {
+          console.error("Gemini 'Style Me' call failed:", error);
+          botResponse =
+            "I'm sorry, I'm having a little trouble thinking of styling tips right now. Please try again in a moment!";
+        }
+
+        typingIndicator.style.display = "none";
+        // Display the response (with no product cards)
+        displayBotMessage(botResponse, []);
+      }
+
+      /**
+       * --- "GENERATION" FUNCTION (MODIFIED) ---
+       * This simulates the "G" in RAG: Displaying the generated text
+       * and the "Augmented" product data.
+       * Now includes the "✨ Style this" button.
+       */
+      function displayBotMessage(message, products = []) {
+        const messageElement = document.createElement("div");
+        messageElement.className = "flex items-start space-x-3";
+
+        let productHtml = "";
+        if (products.length > 0) {
+          // Create a scrollable horizontal container for product cards
+          productHtml = `
+                    <div class="mt-3 -ml-3 -mr-3 pl-3 pr-3 flex overflow-x-auto space-x-4 py-2" style="scroll-snap-type: x mandatory;">
+                        ${products
+                          .map(
+                            (product) => `
+                            <div class="product-card flex-shrink-0 w-48 border border-gray-200 rounded-lg shadow-sm overflow-hidden bg-white">
+                                <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-56 object-cover">
+                                <div class="p-3 space-y-2">
+                                    <h3 class="font-medium text-sm text-gray-900 truncate">${product.name}</h3>
+                                    <p class="text-sm text-gray-600">${product.price}</p>
+                                    <!-- MODIFIED: Changed "View Details" to be less prominent -->
+                                    <a href="#" onclick="alert('Demo: Clicked on ${product.name}')" class="text-center block w-full bg-gray-100 text-gray-800 text-sm font-medium py-1.5 rounded-md hover:bg-gray-200">
+                                        View Details
+                                    </a>
+                                    <!-- NEW: "Style this" button powered by Gemini -->
+                                    <a href="#" onclick="event.preventDefault(); getStylingAdvice('${product.id}', '${product.name}')" class="text-center block w-full bg-gray-900 text-white text-sm font-medium py-1.5 rounded-md hover:bg-gray-700">
+                                        ✨ Style this
+                                    </a>
+                                </div>
+                            </div>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                `;
+        }
+
+        messageElement.innerHTML = `
+                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17.25l.038-.038A5.25 5.25 0 0115 15.11V15.11a5.25 5.25 0 015.212 5.288l.038.038M9.75 17.25L9 17.25a5.25 5.25 0 01-5.212-5.288l-.038-.038A5.25 5.25 0 019 6.89V6.89a5.25 5.25 0 015.212 5.288l.038.038M9.75 17.25l-.038.038A5.25 5.25 0 0015 19.11V19.11a5.25 5.25 0 005.212-5.288l.038-.038M9.75 17.25L9 17.25a5.25 5.25 0 00-5.212 5.288l-.038.038A5.25 5.25 0 009 25.11V25.11a5.25 5.25 0 005.212-5.288l.038-.038"></path></svg>
+                </div>
+                <div class="max-w-xs md:max-w-md">
+                    <div class="chat-bubble-bot p-3 rounded-lg shadow-sm">
+                        <p class="text-sm text-gray-800">${message}</p>
+                    </div>
+                    ${productHtml}
+                </div>
+            `;
+        chatWindow.appendChild(messageElement);
+        scrollToBottom();
+      }
+
+      function scrollToBottom() {
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }
+    </script>
+  </body>
+</html>
